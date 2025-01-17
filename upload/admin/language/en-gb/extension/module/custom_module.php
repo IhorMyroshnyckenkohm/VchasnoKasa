@@ -1,0 +1,25 @@
+<?php
+$_['heading_title'] = 'Custom Module';
+$_['button_create_receipt'] = 'Create receipt';
+$_['text_success'] = 'Settings successfully saved!';
+$_['entry_status'] = 'Status';
+$_['button_save'] = 'Save';
+$_['button_cancel'] = 'Cancel';
+$_['text_extension'] = 'Extensions';
+$_['receipt'] = 'Extensions';
+$_['success'] = 'success';
+$_['responce'] = 'responce';
+$_['select_a_product'] = 'select a product';
+$_['text_shipping'] = 'text shipping';
+$_['table_already_created'] = 'the necessary tables are already created in the database';
+$_['device'] = 'device';
+$_['example_device'] = 'example device';
+$_['already_done_receipt_for_order'] = 'Receipt already created';
+$_['by'] = 'by device : ';
+$_['current_device'] = 'Current device';
+$_['tr_select_devise'] = 'Please select device';
+$_['tr_device_name'] = 'Device Name';
+$_['tr_device_id'] = 'Device ID';
+$_['device_not_selected'] = 'device not selected';
+$_['tr_save'] = 'Save';
+$_['tr_back'] = 'Go back';
