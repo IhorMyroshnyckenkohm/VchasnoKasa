@@ -33,8 +33,8 @@
                             <a href="{{ order.url }}" {#class="has-text-link"#} style="color:white;">
                                 <p><strong>Order ID:</strong> {{ id }}</p></a>
                             {% if order.receipt_created %}
-                                <p class="has-text-success">{{ order.response }} Receipt already created
-                                    on {{ order.created_time }} by device "{{ order.device_name }}".</p>
+                                <p class="has-text-success">{{ already_done_receipt_for_order }}
+                                    {{ order.created_time }}  "{{ order.device_name }}".</p>
                             {% else %}
                                 <p class="has-text-danger">{{ order.response }} {{ by }} <b>{{ order.device_name }}</b> {{ order.created_time }}</p>
                             {% endif %}
@@ -42,7 +42,7 @@
                     {% endfor %}
                 </ul>
             {% else %}
-                <p class="has-text-grey">No orders found.</p>
+                <p class="has-text-grey">{{ tr_no_orders_found }}</p>
             {% endif %}
         </div>
     </div>

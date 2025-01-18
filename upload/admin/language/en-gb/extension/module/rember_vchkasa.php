@@ -1,5 +1,5 @@
 <?php
-$_['heading_title'] = 'Custom Module';
+$_['heading_title'] = 'Rember vchasno kasa';
 $_['button_create_receipt'] = 'Create receipt';
 $_['text_success'] = 'Settings successfully saved!';
 $_['entry_status'] = 'Status';
@@ -15,7 +15,6 @@ $_['table_already_created'] = 'the necessary tables are already created in the d
 $_['device'] = 'device';
 $_['example_device'] = 'example device';
 $_['already_done_receipt_for_order'] = 'Receipt already created';
-$_['by'] = 'by device : ';
 $_['current_device'] = 'Current device';
 $_['tr_select_devise'] = 'Please select device';
 $_['tr_device_name'] = 'Device Name';
@@ -23,3 +22,7 @@ $_['tr_device_id'] = 'Device ID';
 $_['device_not_selected'] = 'device not selected';
 $_['tr_save'] = 'Save';
 $_['tr_back'] = 'Go back';
+$_['tr_no_orders_found'] = 'No orders found';
+$_['cannot_connect_to_device'] = 'Cannot connect to device';
+$_['text_enabled'] = 'enabled';
+$_['text_disabled'] = 'disabled';
