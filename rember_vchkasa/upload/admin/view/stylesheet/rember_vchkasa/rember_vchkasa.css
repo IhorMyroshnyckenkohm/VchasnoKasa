@@ -1,0 +1,55 @@
+.devices-container {
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+}
+
+.device-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.device-input {
+    padding: 8px 12px;
+    width: 75%;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+.deviceSelect{
+    min-width: 100%;
+}
+.remove-device {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.remove-device i {
+    margin-right: 6px;
+}
+
+.remove-device:hover {
+    background-color: #d32f2f;
+}
+
+[data-toggle="tooltip"] {
+    position: relative;
+}
+.p_end{
+    text-align: end;
+}
+.a_white{
+    color:white;
+}
+
+.custom-bootstrap {
+    all: unset;
+}

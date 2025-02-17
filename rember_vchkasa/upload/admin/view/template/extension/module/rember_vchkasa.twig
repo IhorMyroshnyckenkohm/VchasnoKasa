@@ -24,22 +24,26 @@
                 <a id="add_device" data-toggle="tooltip" title="add device" class="btn btn-success"
                    data-original-title="add device"><i
                             class="fa fa-plus-circle"></i> add device </a>
-                <div class="form-group">
+                <div class="form-group bg-info">
                     <div class="container">
                         <div class="box">
                             <h1 class="title">{{ tr_current_device }} :</h1>
-                            <p><strong>{{ tr_device_name }} :</strong> {{ current_device_name }}</p>
-                            <p><strong>{{ tr_device_id }} :</strong> {{ current_device_id }}</p>
+                            <p><strong>{{ tr_device_name }} :</strong> <i
+                                        id="current_device">{{ current_device_name }}</i></p>
+                            <p><strong>{{ tr_device_id }} :</strong> <i
+                                        id="current_device_id">{{ current_device_id }}</i></p>
                         </div>
                         <form action="index.php?route=extension/module/rember_vchkasa/device_save&user_token={{ user_token }}"
                               method="post">
-                            <select class="form-select" id="deviceSelect" name="device_id">
-                                {% for device in devices %}
-                                    <option value="{{ device.id }}">{{ device.name }}</option>
-                                {% endfor %}
-                            </select>
-                            <button type="submit" class="btn-link" id="saveDevice">{{ tr_save }}</button>
-                            <label for="deviceSelect"></label>
+                            <div>
+                                <select class="form-select" id="deviceSelect" name="device_id">
+                                    {% for device in devices %}
+                                        <option value="{{ device.id }}">{{ device.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                <button type="button" class="btn-link" id="saveDevice">{{ tr_save }}</button>
+                                <label for="deviceSelect"></label>
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -83,51 +87,6 @@
                                 </div>
                             {% endfor %}
                         </div>
-                        <style>
-                            .devices-container {
-                                flex-wrap: wrap;
-                                gap: 15px;
-                                align-items: center;
-                            }
-
-                            .device-container {
-                                display: flex;
-                                align-items: center;
-                                gap: 15px;
-                            }
-
-                            .device-input {
-                                padding: 8px 12px;
-                                width: 75%;
-                                font-size: 14px;
-                                border-radius: 4px;
-                                border: 1px solid #ccc;
-                            }
-
-                            .remove-device {
-                                background-color: #f44336;
-                                color: white;
-                                border: none;
-                                padding: 8px 12px;
-                                cursor: pointer;
-                                border-radius: 4px;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                            }
-
-                            .remove-device i {
-                                margin-right: 6px;
-                            }
-
-                            .remove-device:hover {
-                                background-color: #d32f2f;
-                            }
-
-                            [data-toggle="tooltip"] {
-                                position: relative;
-                            }
-                        </style>
                     </div>
                 </form>
             </div>
@@ -144,7 +103,7 @@
                     class="device-input"
                     placeholder="Device Name">
             <a
-                    onclick="nothing(this)"
+                    onclick="removeGroup(this)"
                     class="remove-device"
                     name="remove_device"
                     data-toggle="tooltip"
@@ -155,17 +114,7 @@
     </template>
 
     <script>
-        document.getElementById('add_device').addEventListener('click', () => {
-            const lastId = document.querySelectorAll('#devices_container input').length;
-            const newId = lastId ? lastId + 1 : 1;
-
-            const template = document.getElementById('device_template').innerHTML;
-            const newElement = template.replace(/%id%/g, newId);
-
-            document.getElementById('devices_container').insertAdjacentHTML('beforeend', newElement);
-        });
-
-        function nothing(ele) {
+        function removeGroup(ele) {
             ele.closest('.device-container').remove();
         }
     </script>

@@ -2,13 +2,14 @@
 $_['heading_title'] = 'Рембер вчасно каса';
 $_['text_home'] = 'Головна';
 $_['button_create_receipt'] = 'Створити чек';
+$_['cannot_connect_to_device'] = 'не виходить підключитися до девайсу';
 $_['text_success'] = 'Налаштування успішно збережено!';
 $_['entry_status'] = 'Статус';
-$_['button_save'] = 'Зберегти';
+$_['button_save'] = 'Зберегти девайс';
 $_['button_cancel'] = 'Скасувати';
 $_['text_extension'] = 'Розширення';
 $_['receipt'] = 'Чек';
-$_['success'] = 'Успіх';
+$_['success'] = 'Успішно';
 $_['response'] = 'Відповідь';
 $_['select_a_product'] = 'Виберіть продукт';
 $_['text_shipping'] = 'Доставка';
@@ -22,10 +23,18 @@ $_['tr_device_name'] = 'Назва пристрою';
 $_['tr_device_id'] = 'ID пристрою';
 $_['tr_select_devise'] = 'Будь ласка виберіть девайс';
 $_['device_not_selected'] = 'Пристрій не вибрано';
-$_['tr_save'] = 'Зберегти';
+$_['tr_cancel'] = 'Скасувати';
+$_['tr_save'] = 'Зберегти девайс';
 $_['tr_back'] = 'Повернутися назад';
 $_['tr_no_orders_found'] = 'Не вибрано жодного замовлення';
 $_['receipt_already_created'] = 'Чек для замовлення вже створено';
 $_['text_enabled'] = 'увімкнено';
 $_['text_disabled'] = 'вимкнено';
 $_['status_must_be_paid'] = 'статус повинен бути оплачено';
+$_['order_id'] = 'ід замовлення : ';
+$_['order_link'] = 'Посилання на замовлення';
+$_['text_device_set_success'] = ' Пристрій вибрано успішно ';
+$_['device_was_deleted'] = ' [пристрій був видалений] ';
+$_['url_is_empty'] = ' вкажіть будь url ласка в налаштуваннях ';
+
+

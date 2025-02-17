@@ -5,46 +5,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Orders and Receipts</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
-    <style>
-        .box {
-            background-color: hsl(117deg 89.22% 11.74% / 85%)
-        }
-    </style>
 </head>
 <body>
-<section class="section">
-    <div class="container">
-        <!-- Current Device Information -->
-        <div class="box">
-            <h1 class="title">{{ tr_current_device }}</h1>
-            <div><a href="{{ back_href }}"><p style="text-align: end"><strong> {{ tr_back }}</strong></p></a></div>
-            <p><strong>{{ tr_device_name }}:</strong> {{ current_device_name }}</p>
-            <p><strong>{{ tr_device_id }}:</strong> {{ current_device_id }}</p>
+<div class="container mt-4">
+    <div class="card p-4">
+        <h1 class="mb-3">{{ tr_current_device }}</h1>
+        <div class="mb-3">
+            <a href="{{ back_href }}" class="bg-info btn btn-secondary">{{ tr_back }}</a>
         </div>
-
-        <!-- Orders -->
-        <div class="box">
-            <h2 class="title">Orders</h2>
-            {% if orders|length > 0 %}
-                <ul>
-                    {% for id, order in orders %}
-                        <li class="box">
-                            <a href="{{ order.href }}" {#class="has-text-link"#} style="color:white;">
-                                <p><strong>Order ID:</strong> {{ id }}</p></a>
-                            {% if order.receipt_created %}
-                                <p class="has-text-success"> {{ order.response }} </p>
-                            {% else %}
-                                <p class="has-text-danger"> {{ order.response }} {{ by }} <b> {{ order.device_name }} </b> {{ order.created_time }} </p>
-                            {% endif %}
-                        </li>
-                    {% endfor %}
-                </ul>
-            {% else %}
-                <p class="has-text-grey">{{ tr_no_orders_found }}</p>
-            {% endif %}
-        </div>
+        <p><strong>{{ tr_device_name }} :&nbsp;</strong> {{ current_device_name }}</p>
+        <p><strong>{{ tr_device_id }} :&nbsp;</strong> {{ current_device_id }}</p>
     </div>
-</section>
+
+    <div class="card mt-4 p-4">
+        <h2 class="mb-3">Orders</h2>
+        {% if is_error %}
+            <div class="alert alert-danger" role="alert">
+                <strong>{{ error }} : &nbsp; {{ current_device_name }}</strong>
+            </div>
+        {% elseif orders|length > 0 %}
+            <div class="content">
+                {% for id, order in orders %}
+                    <div class="list-group-item">
+                        <a href="{{ order.href }}"><strong>{{ order_id }}</strong> {{ id }}</a>
+                        {% if order.receipt_created %}
+                            <br><a href="{{ order.link }}"><strong>{{ order_link }}</strong></a>
+                            <span class="badge bg-success">{{ order.response }}</span>
+                        {% else %}
+                            <span class="badge alert-danger">{{ order.response }} : <strong> {{ order.device_name }} &nbsp;</strong> {{ order.created_time }}</span>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-muted">{{ tr_no_orders_found }}</p>
+        {% endif %}
+    </div>
+</div>
 </body>
 </html>
