@@ -49,7 +49,7 @@ class ModelExtensionModuleRemberVchkasa extends Model
 
     public function removeDevice(int $device_id): void
     {
-        if ($this->session->data['device_id'] == $device_id) {
+        if (key_exists('device_id', $this->session->data) && $this->session->data['device_id'] == $device_id) {
             unset($this->session->data['device_id']);
         }
         $this->db->query("DELETE FROM " . DB_PREFIX . "rember_vchkasa_devices WHERE id = " . $device_id);
