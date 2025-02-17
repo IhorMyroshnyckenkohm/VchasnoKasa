@@ -1,0 +1,173 @@
+{{ header }}{{ column_left }}
+<div id="content">
+    <div class="page-header">
+        <div class="container-fluid">
+            <div class="pull-right">
+                <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}"
+                        class="btn btn-primary"><i class="fa fa-save"></i></button>
+                <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
+                            class="fa fa-reply"></i></a></div>
+            <h1>{{ heading_title }}</h1>
+            <ul class="breadcrumb">
+                {% for breadcrumb in breadcrumbs %}
+                    <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+            </div>
+            <div class="panel-body">
+                <a id="add_device" data-toggle="tooltip" title="add device" class="btn btn-success"
+                   data-original-title="add device"><i
+                            class="fa fa-plus-circle"></i> add device </a>
+                <div class="form-group">
+                    <div class="container">
+                        <div class="box">
+                            <h1 class="title">{{ tr_current_device }} :</h1>
+                            <p><strong>{{ tr_device_name }} :</strong> {{ current_device_name }}</p>
+                            <p><strong>{{ tr_device_id }} :</strong> {{ current_device_id }}</p>
+                        </div>
+                        <form action="index.php?route=extension/module/rember_vchkasa/device_save&user_token={{ user_token }}"
+                              method="post">
+                            <select class="form-select" id="deviceSelect" name="device_id">
+                                {% for device in devices %}
+                                    <option value="{{ device.id }}">{{ device.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="submit" class="btn-link" id="saveDevice">{{ tr_save }}</button>
+                            <label for="deviceSelect"></label>
+                        </form>
+                    </div>
+                </div>
+                <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module"
+                      class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" for="api_url">api url</label>
+                        <div class="col-sm-10">
+                            <input
+                                    type="text"
+                                    name="rember_vchkasa_api_url"
+                                    value="{{ rember_vchkasa_api_url }}"
+                                    id="api_url"
+                                    class="form-control"
+                                    placeholder="http://localhost:3939/"
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div id="devices_container" class="devices-container">
+                            {% for key, unit in devices %}
+                                <div class="device-container">
+                                    <label class="col-sm-2 control-label" for="{{ unit['id'] }}">{{ device }}
+                                        :</label><input
+                                            type="text"
+                                            name="devices[{{ unit['id'] }}]"
+                                            value="{{ key }}"
+                                            id="{{ unit['id'] }}"
+                                            class="device-input"
+                                            placeholder="Device Name">
+                                    {% if unit['id'] > 1 %}
+                                        <button
+                                                class="remove-device"
+                                                name="remove_device"
+                                                value="{{ unit['id'] }}"
+                                                data-toggle="tooltip"
+                                                title="{{ remove_device }}">
+                                            <i class="fa fa-minus-circle"></i>
+                                        </button>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <style>
+                            .devices-container {
+                                flex-wrap: wrap;
+                                gap: 15px;
+                                align-items: center;
+                            }
+
+                            .device-container {
+                                display: flex;
+                                align-items: center;
+                                gap: 15px;
+                            }
+
+                            .device-input {
+                                padding: 8px 12px;
+                                width: 75%;
+                                font-size: 14px;
+                                border-radius: 4px;
+                                border: 1px solid #ccc;
+                            }
+
+                            .remove-device {
+                                background-color: #f44336;
+                                color: white;
+                                border: none;
+                                padding: 8px 12px;
+                                cursor: pointer;
+                                border-radius: 4px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                            }
+
+                            .remove-device i {
+                                margin-right: 6px;
+                            }
+
+                            .remove-device:hover {
+                                background-color: #d32f2f;
+                            }
+
+                            [data-toggle="tooltip"] {
+                                position: relative;
+                            }
+                        </style>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <template id="device_template">
+        <div class="device-container">
+            <label class="col-sm-2 control-label" for="{{ '%id%' }}">{{ device }} :</label>
+            <input
+                    type="text"
+                    name="devices[{{ '%id%' }}]"
+                    value=""
+                    id="{{ '%id%' }}"
+                    class="device-input"
+                    placeholder="Device Name">
+            <a
+                    onclick="nothing(this)"
+                    class="remove-device"
+                    name="remove_device"
+                    data-toggle="tooltip"
+                    title="{{ remove_device }}">
+                <i class="fa fa-minus-circle"></i>
+            </a>
+        </div>
+    </template>
+
+    <script>
+        document.getElementById('add_device').addEventListener('click', () => {
+            const lastId = document.querySelectorAll('#devices_container input').length;
+            const newId = lastId ? lastId + 1 : 1;
+
+            const template = document.getElementById('device_template').innerHTML;
+            const newElement = template.replace(/%id%/g, newId);
+
+            document.getElementById('devices_container').insertAdjacentHTML('beforeend', newElement);
+        });
+
+        function nothing(ele) {
+            ele.closest('.device-container').remove();
+        }
+    </script>
+</div>
+{{ footer }}

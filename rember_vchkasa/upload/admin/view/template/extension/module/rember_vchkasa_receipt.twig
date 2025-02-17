@@ -1,0 +1,50 @@
+{{ header }}{{ column_left }}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders and Receipts</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma/css/bulma.min.css">
+    <style>
+        .box {
+            background-color: hsl(117deg 89.22% 11.74% / 85%)
+        }
+    </style>
+</head>
+<body>
+<section class="section">
+    <div class="container">
+        <!-- Current Device Information -->
+        <div class="box">
+            <h1 class="title">{{ tr_current_device }}</h1>
+            <div><a href="{{ back_href }}"><p style="text-align: end"><strong> {{ tr_back }}</strong></p></a></div>
+            <p><strong>{{ tr_device_name }}:</strong> {{ current_device_name }}</p>
+            <p><strong>{{ tr_device_id }}:</strong> {{ current_device_id }}</p>
+        </div>
+
+        <!-- Orders -->
+        <div class="box">
+            <h2 class="title">Orders</h2>
+            {% if orders|length > 0 %}
+                <ul>
+                    {% for id, order in orders %}
+                        <li class="box">
+                            <a href="{{ order.href }}" {#class="has-text-link"#} style="color:white;">
+                                <p><strong>Order ID:</strong> {{ id }}</p></a>
+                            {% if order.receipt_created %}
+                                <p class="has-text-success"> {{ order.response }} </p>
+                            {% else %}
+                                <p class="has-text-danger"> {{ order.response }} {{ by }} <b> {{ order.device_name }} </b> {{ order.created_time }} </p>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="has-text-grey">{{ tr_no_orders_found }}</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+</body>
+</html>
