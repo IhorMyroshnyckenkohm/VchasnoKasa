@@ -2,9 +2,9 @@
 
 class ControllerExtensionModuleRemberVchkasa extends Controller
 {
-    public string $response_message = '';
+    public $response_message = '';
 
-    public bool $error = false;
+    public $error = false;
     private $model;
 
     public function index()
@@ -69,7 +69,8 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
         $this->load();
         $device_id = (int)$this->session->data['device_id'];
         $settings_info = $this->model->getDeviceDataById($device_id);
-        $current_device_name = !empty($settings_info['name']) ?? '';
+        $current_device_name = $settings_info['name'];
+        if (empty($current_device_name)) { $current_device_name = ''; }
         $orders = $this->getOrders()[0];
 
         $data = array_merge($this->translationsData(),
@@ -84,7 +85,7 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
 
         $shift = $this->sendCurl($this->openShift($current_device_name));
 
-        if (isset($shift['errortxt'])) {
+        if (!empty($shift['response']['errortxt']) && $shift['response']['res'] != 1096) {
             $this->error = true;
             $this->response_message .= '&nbsp;' . $shift['errortxt'];
         } else {
