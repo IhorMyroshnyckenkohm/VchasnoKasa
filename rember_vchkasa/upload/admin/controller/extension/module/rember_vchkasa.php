@@ -69,8 +69,12 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
         $this->load();
         $device_id = (int)$this->session->data['device_id'];
         $settings_info = $this->model->getDeviceDataById($device_id);
-        $current_device_name = $settings_info['name'];
-        if (empty($current_device_name)) { $current_device_name = ''; }
+        $current_device_name = '';
+        $throw_error = true;
+        if (key_exists('name', $settings_info)){
+            $current_device_name = $settings_info['name'];
+            $throw_error = false;
+        }
         $orders = $this->getOrders()[0];
 
         $data = array_merge($this->translationsData(),
@@ -84,8 +88,10 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
             ]);
 
         $shift = $this->sendCurl($this->openShift($current_device_name));
-
-        if (!empty($shift['response']['errortxt']) && $shift['response']['res'] != 1096) {
+        if($throw_error){
+            $shift['errortxt'] = 'не вибрано девайс';
+        }
+        if (!empty($shift['errortxt']) || (!empty($shift['response']['errortxt']) && $shift['response']['res'] != 1096)) {
             $this->error = true;
             $this->response_message .= '&nbsp;' . $shift['errortxt'];
         } else {
@@ -193,8 +199,12 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
             curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
 
             $response = curl_exec($ch);
-            $http_code = curl_getinfo($ch);
-
+            $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            if ($response === false) {
+                $error = curl_error($ch);
+                curl_close($ch);
+                return ['errortxt' => "cURL Error: $error", 'response' => null];
+            }
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($request_data));
             curl_close($ch);
         } catch (Exception $e) {
@@ -274,7 +284,7 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
             switch ($total['code']) {
                 case 'total':
                     $request_data['fiscal']['receipt']['pays'][] = [
-                        "type" => 2,
+                        "type" => 17,
                         "sum" => $total['value'],
 //                  "change" => 0.00,
 //                  "comment" => "Payment comment for cash"
@@ -282,7 +292,7 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
                     break;
                 case 'card':
                     $request_data['fiscal']['receipt']['pays'][] = [
-                        "type" => 2,
+                        "type" => 17,
                         "sum" => $total['value'],
 //                  "paysys" => "VISA",
 //                  "rrn" => "123",
