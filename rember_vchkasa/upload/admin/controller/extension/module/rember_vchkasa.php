@@ -88,6 +88,7 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
             ]);
 
         $shift = $this->sendCurl($this->openShift($current_device_name));
+
         if($throw_error){
             $shift['errortxt'] = 'не вибрано девайс';
         }
@@ -153,11 +154,13 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
         }
 
         $request_data = $this->prepareData($order_id, $settings_info['name'], $order_info);
-        $receipt = $this->sendCurl($request_data)['response'];
+        $receipt = $this->sendCurl($request_data);
+        $responce = $receipt['response'];
+        $receipt_error = $receipt['errortxt'];
 
-        if (!empty($receipt['errortxt'])) {
+        if (!empty($receipt_error)) {
             return [
-                'response' => '&nbsp;' . $receipt['errortxt'],
+                'response' => '&nbsp;' . $receipt_error,
                 'error' => true,
                 'href' => 'index.php?route=sale/order/info&user_token=' . $this->session->data['user_token'] . '&order_id=' . $order_id,
             ];
@@ -175,9 +178,9 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
 
         return [
             'receipt_created' => true,
-            'response' => $this->language->get('success') . ' ' . $receipt['info']['printinfo']['fisn'],
+            'response' => $this->language->get('success') . ' ' . $responce['info']['printinfo']['fisn'],
             'error' => false,
-            'link' => 'https://kasa.vchasno.ua/check-viewer/' . $receipt['info']['printinfo']['fisn'],
+            'link' => 'https://kasa.vchasno.ua/check-viewer/' . $responce['info']['printinfo']['fisn'],
             'href' => 'index.php?route=sale/order/info&user_token=' . $this->session->data['user_token'] . '&order_id=' . $order_id,
         ];
 
@@ -210,7 +213,16 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
         } catch (Exception $e) {
             return ['errortxt' => $e->getMessage(), 'response' => null];
         }
+
+        if ($response == false) {
+            return ['errortxt' => 'помилка', 'response' => null];
+        }
+
         $json_decode = json_decode($response, true);
+
+        if (!empty($json_decode['errortxt']) && $json_decode['res'] != 1096) {
+            return ['errortxt' => $json_decode['errortxt'], 'response' => null];
+        }
 
         if (is_null($json_decode)) {
             return ['errortxt' => $response, 'response' => null];
@@ -264,7 +276,7 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
             "type" => "1",
             "userinfo" => [
                 "email" => $order_info['email'],
-//              "phone" => "+380634051171",
+//              "phone" => "+380",
             ],
             "fiscal" => [
                 "task" => 1,
@@ -317,11 +329,20 @@ class ControllerExtensionModuleRemberVchkasa extends Controller
                 $request_data['fiscal']['receipt']['rows'][] = [
                     "price" => $product['price'],
                     "name" => html_entity_decode($product['name']),
-                    "cost" => $product['total'] + $flat_rate + $coupon,
+                    "cost" => $product['total'] + $flat_rate,
                     "cnt" => $product['quantity'],
                     "taxgrp" => 2,
                 ];
             }
+        }
+        if($coupon != 0){
+            $request_data['fiscal']['receipt']['rows'][] = [
+                "price" => $coupon,
+                "name" => 'купон',
+                "cost" => $coupon,
+                "cnt" => 1,
+                "taxgrp" => 2,
+            ];
         }
 
         return $request_data;

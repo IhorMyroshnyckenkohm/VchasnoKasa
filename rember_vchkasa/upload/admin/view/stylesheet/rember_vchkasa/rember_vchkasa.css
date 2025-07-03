@@ -53,3 +53,12 @@
 .custom-bootstrap {
     all: unset;
 }
+
+.bg-success {
+    background-color: green !important;
+}
+
+.alert-danger {
+    color: white;
+    background-color: red;
+}
